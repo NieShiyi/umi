@@ -51,11 +51,31 @@ import lang_{{lang}}{{country}}{{index}} from "{{{path}}}";
 {{/paths}}
 {{/LocaleList}}
 
+// 格式化messages文件，把对象转换为字符呀
+const flattenMessages=(
+  nestedMessages: Record<string, any>,
+  prefix = '',
+) => {
+  return Object.keys(nestedMessages).reduce(
+    (messages: Record<string, any>, key) => {
+      let value = nestedMessages[key];
+      let prefixedKey = prefix ? `${prefix}.${key}` : key;
+      if (typeof value === 'string') {
+        messages[prefixedKey] = value;
+      } else {
+        Object.assign(messages, flattenMessages(value, prefixedKey));
+      }
+      return messages;
+    },
+    {},
+  );
+}
+
 export const localeInfo: {[key: string]: any} = {
   {{#LocaleList}}
   '{{name}}': {
     messages: {
-      {{#paths}}...lang_{{lang}}{{country}}{{index}},{{/paths}}
+      {{#paths}}...flattenMessages(lang_{{lang}}{{country}}{{index}}),{{/paths}}
     },
     locale: '{{locale}}',
     {{#Antd}}antd: {

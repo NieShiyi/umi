@@ -1,8 +1,10 @@
 // @ts-ignore
 import {
   FormattedMessage,
+  getLocale,
   history,
   Icon,
+  setLocale,
   useAccess,
   useIntl,
   useModel,
@@ -10,6 +12,7 @@ import {
 // @ts-ignore
 import { TestDecorator } from '@/components/decorator';
 import { Button, DatePicker, Input } from 'antd';
+import { useState } from 'react';
 import styles from './index.less';
 console.log(TestDecorator);
 
@@ -21,18 +24,32 @@ const includedIcons = [
 
 export default function HomePage() {
   const { initialState } = useModel('@@initialState');
+  const [lang, setLange] = useState(getLocale());
   console.log('initialState', initialState);
   const access = useAccess();
   console.log('access', access);
   const intl = useIntl();
+
+  const changeLocale = () => {
+    let curLang = lang === 'zh-CN' ? 'en-US' : 'zh-CN';
+    setLange(curLang);
+    setLocale(curLang, false);
+  };
+
   return (
     <div>
       <h2 className={styles.myText}>index page</h2>
-      <Button type="primary">Button</Button>
       <Input />
       <DatePicker />
-      <div>{intl.formatMessage({ id: 'HELLO' })}</div>
-      <FormattedMessage id="World" />
+      {/* 中英文语言切换 */}
+      <section>
+        <Button type="primary" onClick={changeLocale}>
+          {lang === 'zh-CN' ? '切换英文' : '切换中文'}
+        </Button>
+        <div>{intl.formatMessage({ id: 'HELLO' })}</div>
+        <FormattedMessage id="World" />
+        <div>{intl.formatMessage({ id: 'user.welcome' })}</div>
+      </section>
       <Button
         type="primary"
         onClick={() => {
