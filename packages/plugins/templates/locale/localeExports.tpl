@@ -51,15 +51,14 @@ import lang_{{lang}}{{country}}{{index}} from "{{{path}}}";
 {{/paths}}
 {{/LocaleList}}
 
-// 格式化messages文件，把对象转换为字符呀
 const flattenMessages=(
   nestedMessages: Record<string, any>,
   prefix = '',
 ) => {
   return Object.keys(nestedMessages).reduce(
     (messages: Record<string, any>, key) => {
-      let value = nestedMessages[key];
-      let prefixedKey = prefix ? `${prefix}.${key}` : key;
+      const value = nestedMessages[key];
+      const prefixedKey = prefix ? `${prefix}.${key}` : key;
       if (typeof value === 'string') {
         messages[prefixedKey] = value;
       } else {
