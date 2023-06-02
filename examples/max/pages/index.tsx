@@ -31,9 +31,9 @@ export default function HomePage() {
   const intl = useIntl();
 
   const changeLocale = () => {
-    let curLang = lang === 'zh-CN' ? 'en-US' : 'zh-CN';
-    setLange(curLang);
-    setLocale(curLang, false);
+    const nextLang = lang === 'zh-CN' ? 'en-US' : 'zh-CN';
+    setLange(nextLang);
+    setLocale(nextLang);
   };
 
   return (
